@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3030;
 mongoose.connect(process.env.MONGOCLIENT, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: 'test'
+    dbName: 'CRMDB'
 });
 const db = mongoose.connection;
 db.once("open", () => {
@@ -34,7 +34,9 @@ import { getUsers, updateUserDetails } from './routes/user.route.js';
 getUsers(app);
 //update user details
 updateUserDetails(app);
-
+import { createTick, getTick } from "./routes/ticket.route.js";
+createTick(app);
+getTick(app);
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
 })

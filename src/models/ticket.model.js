@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const ticketSchema = Schema({
     title:{
@@ -41,4 +41,4 @@ const ticketSchema = Schema({
     }
 });
 
-export default model("tickets", ticketSchema);
+export default model("Tickets", ticketSchema, "Tickets");

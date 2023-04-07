@@ -1,15 +1,15 @@
 import { createTicket, getTickets, deleteTicket, updateTicket } from "../controllers/ticket.controller.js";
 import { checkUserType, verifyAdmin, verifyToken} from "../middlewares/auth.js";
 const createTick = (app) => {
-    app.post('/crm/v1/api/ticket',[verifyToken], createTicket);
+    app.post('/crm/api/v1/ticket',[verifyToken], createTicket);
 }
 const getTick = (app) => {
-    app.get('/crm/v1/api/tickets/:ticket?',[verifyToken, checkUserType], createTicket);
+    app.get('/crm/api/v1/tickets/:ticket?',[verifyToken, checkUserType], getTickets);
 }
 const updateTick = (app) => {
-    app.post('/crm/v1/api/updateTicket',[verifyToken, checkUserType], createTicket);
+    app.post('/crm/api/v1/updateTicket',[verifyToken, checkUserType], updateTicket);
 }
 const deleteTick = (app) => {
-    app.post('/crm/v1/api/deleTicket',[verifyToken, verifyAdmin], createTicket);
+    app.post('/crm/api/v1/deleTicket',[verifyToken, verifyAdmin], deleteTicket);
 }
 export {createTick, getTick, updateTick, deleteTick}

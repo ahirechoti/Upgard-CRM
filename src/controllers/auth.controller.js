@@ -17,7 +17,9 @@ const signup = async (req, res) => {
     userType: userType,
     password: req.body.password,
     email: req.body.email,
-    userStatus: userStatus
+    userStatus: userStatus,
+    ticketsCreated: [],
+      ticketsAssigned:[]
   };
 
   try {
@@ -31,7 +33,9 @@ const signup = async (req, res) => {
       userId: user.userId,
       userType: user.userType,
       email: user.email,
-      userStatus: user.userStatus
+      userStatus: user.userStatus,
+      ticketsCreated: [],
+      ticketsAssigned:[]
     }
     // console.log(user);
     res.status(200).send(result_obj);

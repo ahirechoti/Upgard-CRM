@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 
@@ -10,74 +10,76 @@ const userSchema = Schema({
         type: String,
         required: true
     },
-    userId:{
+    userId: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
-        type:String,
+    password: {
+        type: String,
         required: true
     },
-    email:{
-        type:String,
+    email: {
+        type: String,
         required: true,
         unique: true,
         lowercase: true
     },
-    createdAt:{
-        type:Date,
+    createdAt: {
+        type: Date,
         immutable: true,
-        default: ()=>{
+        default: () => {
             return Date.now();
         }
     },
-    createdBy:{
-        type:String,
-        immutable:true
-        
+    createdBy: {
+        type: String,
+        immutable: true
+
     },
-    updatedAt:{
-        type:Date
+    updatedAt: {
+        type: Date
     },
-    userType:{
-        type:String,
-        required:true,
+    userType: {
+        type: String,
+        required: true,
         default: "CUSTOMER"
     },
-    userStatus:{
-        type:String,
-        required:true,
-        default:"APPROVED"
+    userStatus: {
+        type: String,
+        required: true,
+        default: "APPROVED"
     },
-    ticketsCreated:{
-        type: [
-            {type: Schema.Types.ObjectId, ref: 'tickets'}
-          ]
-    }
-},{
-    collection : "CRM"
+    ticketsCreated: {
+        type: [Schema.ObjectId],
+        ref: 'Tickets'
+    },
+    ticketsAssigned: {
+        type: [Schema.ObjectId],
+        ref: 'Tickets'
+    },
+
 });
 
-userSchema.pre('updateOne', function() {
+userSchema.pre('updateOne', function () {
     this.set({ updatedAt: new Date() });
-  });
+});
 
-userSchema.pre('save', function(next){
+userSchema.pre('save', function (next) {
     //if(err)  return next('Error');
-    
-    try{
-        if(this.password && this.isModified('password')){                                                                                                                                                                                                                                                                                      
-            this.password  = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8),null);                                                                                                             
+
+    try {
+        if (this.password && this.isModified('password')) {
+            this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8), null);
         }
-        
+
         return next();
-    }catch(ex){
+    } catch (ex) {
         //console.log(ex);
         return next(ex);
     }
-    });
-export default model("users", userSchema);
+});
+export default model("Users", userSchema, "Users");
 
 /**
  * {
