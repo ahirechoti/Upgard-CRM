@@ -54,7 +54,7 @@ const signIn = async (req, res) => {
       return res.status(400).send({ message: 'User can not login.' });
     } else {
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        var token = jwt.sign({id: user.userId}, process.env.SECRET, {
+        var token = jwt.sign({user: user}, process.env.SECRET, {
           expiresIn: 5000
         });
         //console.log(token);

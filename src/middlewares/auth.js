@@ -16,7 +16,7 @@ const verifyToken = async (req, res, next) => {
                     message: 'Unauthorized'
                 });
             }
-            req.userId = data.id;
+            req.currentUser = data.user;
             next();
         });
         
@@ -28,7 +28,7 @@ const verifyToken = async (req, res, next) => {
 
 const verifyAdmin = async (req, res, next) => {
     try {
-        const user = await userModel.findOne({"userId": req.userId});
+        const user = await userModel.findOne({"userId": req.currentUser.userId});
         if(user && user.userType == 'ADMIN'){
             next();
         }else{
@@ -43,4 +43,24 @@ const verifyAdmin = async (req, res, next) => {
     }
 }
 
-export { verifyToken, verifyAdmin }
+const checkUserType = async (req, res, next) => {
+    try {
+        const user = await userModel.findOne({"userId": req.currentUser.userId});
+        if(user && user.userType == 'ADMIN'){
+            next();
+        }else if(user && (["ENGINEER", "CUSTOMER"].indexOf(user.userType) != -1) &&
+        req.currentUser.userId == req.params.userId){
+            next();
+        }else{
+            return res.status(403).send({
+                message: 'You are not the owner'
+            });
+        }
+    } catch (error) {
+        return res.status(500).send({
+            message:'Internal server error'
+        });
+    }
+}
+
+export { verifyToken, verifyAdmin, checkUserType }

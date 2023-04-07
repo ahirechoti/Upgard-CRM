@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 
@@ -49,22 +49,34 @@ const userSchema = Schema({
         type:String,
         required:true,
         default:"APPROVED"
+    },
+    ticketsCreated:{
+        type: [
+            {type: Schema.Types.ObjectId, ref: 'tickets'}
+          ]
     }
 },{
     collection : "CRM"
-})
+});
+
+userSchema.pre('updateOne', function() {
+    this.set({ updatedAt: new Date() });
+  });
 
 userSchema.pre('save', function(next){
-    //if(err)  return next('Error');;
+    //if(err)  return next('Error');
     
     try{
-        this.password = bcrypt.hashSync(this.password, 10);
+        if(this.password && this.isModified('password')){                                                                                                                                                                                                                                                                                      
+            this.password  = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8),null);                                                                                                             
+        }
+        
         return next();
     }catch(ex){
         //console.log(ex);
         return next(ex);
     }
-    })
+    });
 export default model("users", userSchema);
 
 /**

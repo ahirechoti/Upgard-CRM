@@ -1,7 +1,9 @@
-import { findAllUser } from "../controllers/user.controller.js";
-import { verifyToken, verifyAdmin } from "../middlewares/auth.js";
+import { findAllUser, updateUser } from "../controllers/user.controller.js";
+import { verifyToken, verifyAdmin, checkUserType } from "../middlewares/auth.js";
 const getUsers = (app) => {
     app.get("/crm/api/v1/Users",[verifyToken, verifyAdmin], findAllUser);
 }
-
-export { getUsers }
+const updateUserDetails = (app) => {
+    app.post("/crm/api/v1/userUpdate", [verifyToken, checkUserType], updateUser);
+}
+export { getUsers, updateUserDetails }

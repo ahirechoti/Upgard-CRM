@@ -13,4 +13,17 @@ const userResponse = (users) => {
     });
     return userResult;
 }
-export {userResponse};
+const ticketObject = (ticket) => {
+    return {
+        title: ticket.title,
+        description: ticket.description,
+        ticketPriority: ticket.ticketPriority,
+        ticketStatus: ticket.ticketStatus,
+        assignee: ticket.assignee,
+        reporter: ticket.reporter,
+        id: ticket._id,
+        createdAt : ticket.createdAt,
+        updatedAt: ticket.updatedAt
+    }
+}
+export {userResponse, ticketObject};
